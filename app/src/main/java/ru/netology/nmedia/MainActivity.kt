@@ -10,31 +10,43 @@ import ru.netology.nmedia.databinding.ActivityMainBinding
 import ru.netology.nmedia.dto.CounterFormatter
 import ru.netology.nmedia.dto.Post
 
-
 class MainActivity : AppCompatActivity() {
     val formatter = CounterFormatter()
+    lateinit var post: Post
+    lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //----------
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
-        val post = Post(
+        // Инициализация поста
+        post = Post(
             id = 1,
             author = "Нетология. Университет интернет-профессий будущего",
-            content = "Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растём сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb",
+            content = "Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов " +
+                    "по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, " +
+                    "аналитике и управлению. Мы растём сами и помогаем расти студентам: " +
+                    "от новичков до уверенных профессионалов. Но самое важное остаётся с нами:" +
+                    " мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, " +
+                    "целиться выше, бежать быстрее. Наша миссия — помочь встать на путь роста и " +
+                    "начать цепочку перемен → http://netolo.gy/fyb",
             publisher = "21 мая в 18:03",
             likes = 0,
-            shares = 99,
+            shares = 6300,
+            views = 12
         )
 
+        // Инициализация UI
         with(binding) {
             author.text = post.author
             published.text = post.publisher
             content.text = post.content
-            likeCount.text = post.likes.toString()
+
+            likeCount.text = formatter.format(post.likes)
+            shareCount.text = formatter.format(post.shares)
+            viewsCount.text = formatter.format(post.views)
 
             if (post.likeByMe) {
                 like.setImageResource(R.drawable.ic_liked_24)
@@ -42,29 +54,32 @@ class MainActivity : AppCompatActivity() {
 
             like.setOnClickListener {
                 post.likeByMe = !post.likeByMe
+                if (post.likeByMe) {
+                    post.likes += 1
+                } else {
+                    post.likes -= 1
+                }
                 like.setImageResource(
                     if (post.likeByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_24
                 )
-                if (post.likeByMe) {
-                    post.views += 1
-                } else {
-                    post.views -= 1
-                }
-                binding.likeCount.text = formatter.format(post.views)
+                updateLikes()
             }
 
-            //share
-            fun updateShares() {
-                binding.shareCount.text = formatter.format(post.shares)
-            }
-            updateShares()
             binding.share.setOnClickListener {
                 post.shares += 1
                 updateShares()
             }
+            updateViews()
         }
-        //---------
-        //binding.root.setOnClickListener {}
-        //binding.like.setOnClickListener {}
+    }
+
+    private fun updateLikes() {
+        binding.likeCount.text = formatter.format(post.likes)
+    }
+    private fun updateShares() {
+        binding.shareCount.text = formatter.format(post.shares)
+    }
+    private fun updateViews() {
+        binding.viewsCount.text = formatter.format(post.views)
     }
 }
