@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun canselEdit(post: Post) {
-                viewModel.cancelEdit(post)
+                viewModel.cancelEdit()
             }
 
             override fun onLike(post: Post) {
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         binding.cancel.setOnClickListener {
             val post = viewModel.edited.value
             if (post != null) {
-                viewModel.cancelEdit(post)
+                viewModel.cancelEdit()
             }
             with(binding.content) {
                 setText("")
