@@ -3,7 +3,15 @@
     <string name="hello">Hello World!</string>
     <string name="description_post_author_avatar" translatable="false">Post author avatar</string>
     <string name="description_post_menu" translatable="false">Post menu</string>
-    <string name="description_post_like" translatable="false">Like</string>
-    <string name="description_post_share" translatable="false">Share</string>
+    <string name="description_post_like">Like</string>
+    <string name="description_post_share">Share</string>
+    <string name="description_post_save">Save</string>
+    <string name="menu_remove">Remove</string>
+    <string name="post_text" translatable="false">Post Text</string>
+    <string name="menu_edit">Edit</string>
+    <string name="error_empty_content" translatable="false">Content can\'t be empty</string>
     <string name="nmedia">NMedia</string>
+    <string name="description_post_cancel" translatable="false">Cancel editing</string>
+    <string name="new_post_text">New POST TEXT</string>
+    <string name="cansel_edit">CANSEL EDIT</string>
 </resources>
