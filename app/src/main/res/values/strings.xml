@@ -12,6 +12,6 @@
     <string name="error_empty_content" translatable="false">Content can\'t be empty</string>
     <string name="nmedia">NMedia</string>
     <string name="description_post_cancel" translatable="false">Cancel editing</string>
-    <string name="new_post_text">New POST TEXT</string>
-    <string name="cansel_edit">CANSEL EDIT</string>
+    <string name="new_post_text" translatable="false">New POST TEXT</string>
+    <string name="cansel_edit" translatable="false">CANSEL EDIT</string>
 </resources>
