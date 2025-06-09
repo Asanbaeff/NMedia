@@ -45,12 +45,19 @@ class PostViewHolder(
             author.text = post.author
             published.text = post.published
             content.text = post.content
-            likeCount.text = formatter.format(post.likes)
-            shareCount.text = formatter.format(post.shares)
+            //likeCount.text = formatter.format(post.likes)
+            //shareCount.text = formatter.format(post.shares)
 
-            like.setImageResource(
-                if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_24
-            )
+            like.apply {
+                isChecked = post.likedByMe
+                //text = post.likes.toString()
+                text = formatter.format(post.likes)
+            }
+
+            share.apply {
+                //text = post.shares.toString()
+                text = formatter.format(post.shares)
+            }
 
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
@@ -61,17 +68,17 @@ class PostViewHolder(
                                 onInteractionListener.onRemove(post)
                                 true
                             }
+
                             R.id.edit -> {
                                 onInteractionListener.onEdit(post)
                                 true
                             }
+
                             else -> false
                         }
                     }
                 }.show()
             }
-            //onInteractionListener.canselEdit(post)
-            //R.id.content
 
             like.setOnClickListener {
                 onInteractionListener.onLike(post)
