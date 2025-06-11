@@ -38,9 +38,11 @@ android {
 
 def arch_version = "2.2.0"
 def lifecycle_version = "2.9.0"
-def activity_version = "1.10.0"
+def activity_version = "1.10.1"
 def recyclerview_version = "1.1.0"
 def mdc_version = "1.3.0"
+def fragment_version = "1.8.8"
+
 
 dependencies {
     implementation libs.androidx.core.ktx
@@ -59,4 +61,6 @@ dependencies {
     testImplementation libs.androidx.core.testing
     implementation libs.androidx.recyclerview
     implementation libs.material
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+
 }

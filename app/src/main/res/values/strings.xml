@@ -14,4 +14,9 @@
     <string name="description_post_cancel" translatable="false">Cancel editing</string>
     <string name="new_post_text" translatable="false">New POST TEXT</string>
     <string name="cansel_edit" translatable="false">CANSEL EDIT</string>
+    <string name="chooser_share_post">Share post</string>
+    <string name="add_post" translatable="false">Add post</string>
+    <string name="save" translatable="false">Save</string>
+    <string name="enter_the_text_of_the_post">Enter the text of the post</string>
+    <string name="save_post">Save post</string>
 </resources>
