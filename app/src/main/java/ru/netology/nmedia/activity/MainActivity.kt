@@ -1,9 +1,10 @@
 package ru.netology.nmedia.activity
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ru.netology.nmedia.R
@@ -11,39 +12,43 @@ import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.ActivityMainBinding
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.util.AndroidUtils
 import ru.netology.nmedia.viewmodel.PostViewModel
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import kotlin.getValue
 
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel: PostViewModel by viewModels()
+
+//    private val editPostLauncher = registerForActivityResult(EditPostResultContract()) { result ->
+//        result?.let { (postId, updatedContent) ->
+//            viewModel.edit(post)
+//        }
+//    }
+
+    private val newPostLauncher = registerForActivityResult(NewPostResultContract) { content ->
+        content ?: return@registerForActivityResult
+        viewModel.save(content.toString())
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //binding.buttonsGroup.visibility = View.VISIBLE
-
-
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        val viewModel: PostViewModel by viewModels()
+        val intent = Intent(this, PostEdit::class.java)
 
         val adapter = PostsAdapter(object : OnInteractionListener {
-            override fun onEdit(post: Post) {
-                viewModel.edit(post)
-                binding.buttonsGroup.visibility = View.VISIBLE
-            }
 
-            override fun canselEdit(post: Post) {
-                viewModel.cancelEdit()
+            override fun onEdit(post: Post) {
+                //editPostLauncher.launch(post.id to post.content)
+                startActivity(intent)
+                //intent.putExtra(Intent.EXTRA_TEXT, post.content)
+                viewModel.edit(post)
             }
 
             override fun onLike(post: Post) {
@@ -55,7 +60,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onShare(post: Post) {
-                viewModel.shareById(post.id)
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, post.content)
+                    type = "text/plain"
+                }
+                val shareIntent =
+                    Intent.createChooser(intent, getString(R.string.chooser_share_post))
+                startActivity(shareIntent)
             }
         })
 
@@ -65,47 +77,10 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(posts)
         }
 
-        viewModel.edited.observe(this) { post ->
-            if (post.id != 0L) {
-                with(binding.content) {
-                    setText(post.content)
-                    AndroidUtils.showKeyboard(this)
-                    binding.buttonsGroup.visibility = View.INVISIBLE
-                }
-            }
+        binding.fab.setOnClickListener {
+            newPostLauncher.launch(Unit)
         }
 
-        binding.save.setOnClickListener {
-            with(binding.content) {
-                if (text.isNullOrBlank()) {
-                    Toast.makeText(
-                        this@MainActivity,
-                        context.getString(R.string.error_empty_content),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
 
-                viewModel.save(text.toString())
-
-                setText("")
-                clearFocus()
-                AndroidUtils.hideKeyboard(this)
-                binding.buttonsGroup.visibility = View.INVISIBLE
-            }
-        }
-
-        binding.cancel.setOnClickListener {
-            val post = viewModel.edited.value
-            if (post != null) {
-                viewModel.cancelEdit()
-            }
-            with(binding.content) {
-                setText("")
-                clearFocus()
-                AndroidUtils.hideKeyboard(this)
-                binding.buttonsGroup.visibility = View.INVISIBLE
-            }
-        }
     }
 }

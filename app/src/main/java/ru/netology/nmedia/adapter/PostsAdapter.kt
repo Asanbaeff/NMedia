@@ -1,5 +1,6 @@
 package ru.netology.nmedia.adapter
 
+import android.R.id.edit
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
@@ -86,6 +87,7 @@ class PostViewHolder(
             share.setOnClickListener {
                 onInteractionListener.onShare(post)
             }
+
         }
     }
 }
