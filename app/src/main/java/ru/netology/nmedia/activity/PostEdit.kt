@@ -1,7 +1,6 @@
 package ru.netology.nmedia.activity
 
-import android.R.attr.content
-import android.R.attr.text
+
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
