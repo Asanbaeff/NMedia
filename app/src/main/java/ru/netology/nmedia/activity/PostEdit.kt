@@ -19,11 +19,11 @@ class PostEdit : AppCompatActivity() {
         binding = AcPostEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Получаем исходный контент поста из интента
+
         val postContent = intent.getStringExtra("postContent")
         val postId = intent.getLongExtra("postId", 0L)
 
-        // Устанавливаем исходный контент в EditText
+
         binding.textEdit.setText(postContent)
 
         binding.buttonSave.setOnClickListener {

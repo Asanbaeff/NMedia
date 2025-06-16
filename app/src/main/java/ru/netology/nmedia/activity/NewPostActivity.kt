@@ -39,5 +39,6 @@ class NewPostActivity : AppCompatActivity() {
             }
             finish()
         }
+        binding.edit.setText(intent.getStringExtra("postContent") ?: "")
     }
 }

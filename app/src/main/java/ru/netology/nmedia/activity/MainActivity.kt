@@ -14,16 +14,10 @@ import ru.netology.nmedia.databinding.ActivityMainBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.viewmodel.PostViewModel
 
+
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: PostViewModel by viewModels()
-
-//    private val editPostLauncher = registerForActivityResult(EditPostResultContract()) { result ->
-//        result?.let { (postId, updatedContent) ->
-//            viewModel.edit(post)
-//        }
-//    }
-
     private val newPostLauncher = registerForActivityResult(NewPostResultContract) { content ->
         content ?: return@registerForActivityResult
         viewModel.save(content.toString())
@@ -40,15 +34,22 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val intent = Intent(this, PostEdit::class.java)
+        //val intent = Intent(this, PostEdit::class.java)
+        //val intent = Intent(Intent(Intent.ACTION_VIEW,
+        //"https://www.youtube.com/watch?v=WhWc3b3KhnY".toUri()))
+        //startActivity(intent)
 
         val adapter = PostsAdapter(object : OnInteractionListener {
 
             override fun onEdit(post: Post) {
-                //editPostLauncher.launch(post.id to post.content)
-                startActivity(intent)
-                //intent.putExtra(Intent.EXTRA_TEXT, post.content)
+                post.content.let { content ->
+                    newPostLauncher.launch(content)
+                }
                 viewModel.edit(post)
+
+                //editPostLauncher.launch(post.content)
+                //startActivity(intent)
+                //intent.putExtra(Intent.EXTRA_TEXT, post.content)
             }
 
             override fun onLike(post: Post) {
@@ -60,15 +61,18 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onShare(post: Post) {
-                val intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, post.content)
-                    type = "text/plain"
+                post.content.let { content ->
+                    val intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, content)
+                        type = "text/plain"
+                    }
+                    val shareIntent =
+                        Intent.createChooser(intent, getString(R.string.chooser_share_post))
+                    startActivity(shareIntent)
                 }
-                val shareIntent =
-                    Intent.createChooser(intent, getString(R.string.chooser_share_post))
-                startActivity(shareIntent)
             }
+
         })
 
         binding.list.adapter = adapter
@@ -78,9 +82,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.fab.setOnClickListener {
-            newPostLauncher.launch(Unit)
+            newPostLauncher.launch(null.toString())
         }
 
-
     }
+
 }

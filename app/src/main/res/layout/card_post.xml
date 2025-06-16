@@ -109,6 +109,20 @@
         app:layout_constraintTop_toBottomOf="@id/footer"
         tools:text="33" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/video"
+        style="@style/Widget.AppTheme.LikeShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:checkable="false"
+        android:contentDescription="@string/description_post_share"
+        android:visibility="visible"
+        app:layout_constraintStart_toEndOf="@+id/share"
+        app:layout_constraintTop_toBottomOf="@id/footer"
+        android:text="@string/youtube"/>
+
     <ImageButton
         android:id="@+id/views"
         android:layout_width="@dimen/icon_size"
@@ -130,5 +144,7 @@
         android:text="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/footer" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
